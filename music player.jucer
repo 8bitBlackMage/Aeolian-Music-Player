@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="iWn8V9" name="Music Player" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="0" jucerFormatVersion="1">
+  <MAINGROUP id="kOsEH8" name="Music Player">
+    <GROUP id="{9FAA9C3F-37AF-3D5A-4E13-B87E3FB26381}" name="Assets">
+      <FILE id="ArnshZ" name="DSEG7Classic-Bold.ttf" compile="0" resource="1"
+            file="assets/DSEG7Classic-Bold.ttf"/>
+      <FILE id="DdGJaf" name="file-line.png" compile="0" resource="1" file="assets/file-line.png"/>
+      <FILE id="dt31be" name="file-list-line.png" compile="0" resource="1"
+            file="assets/file-list-line.png"/>
+      <FILE id="QtmzK2" name="folder-line.png" compile="0" resource="1" file="assets/folder-line.png"/>
+      <FILE id="wfcXYu" name="layout-grid-line.png" compile="0" resource="1"
+            file="assets/layout-grid-line.png"/>
+      <FILE id="tfIl3Z" name="pause-line.png" compile="0" resource="1" file="assets/pause-line.png"/>
+      <FILE id="faAxwo" name="play-line.png" compile="0" resource="1" file="assets/play-line.png"/>
+      <FILE id="rjzShh" name="skip-back-line.png" compile="0" resource="1"
+            file="assets/skip-back-line.png"/>
+      <FILE id="xWd5Xc" name="skip-forward-line.png" compile="0" resource="1"
+            file="assets/skip-forward-line.png"/>
+    </GROUP>
+    <GROUP id="{DA10E05D-148E-B41C-DFB5-C1CB9456B8D2}" name="Source">
+      <FILE id="NUovi4" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/CustomLookAndFeel.cpp"/>
+      <FILE id="FzUtze" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="Source/CustomLookAndFeel.h"/>
+      <FILE id="vaBX3w" name="Colours.h" compile="0" resource="0" file="Source/Colours.h"/>
+      <GROUP id="{8071E170-E863-E81B-A455-D30D6B726761}" name="Controls">
+        <FILE id="INe9Lc" name="TagDisplay.cpp" compile="1" resource="0" file="Source/TagDisplay.cpp"/>
+        <FILE id="WBO2Lm" name="TagDisplay.h" compile="0" resource="0" file="Source/TagDisplay.h"/>
+        <FILE id="KuIpJj" name="PlaylistTablebox.cpp" compile="1" resource="0"
+              file="Source/PlaylistTablebox.cpp"/>
+        <FILE id="m3xmkq" name="PlaylistTablebox.h" compile="0" resource="0"
+              file="Source/PlaylistTablebox.h"/>
+        <FILE id="G04eJM" name="transportControl.cpp" compile="1" resource="0"
+              file="Source/transportControl.cpp"/>
+        <FILE id="P5UwSt" name="transportControl.h" compile="0" resource="0"
+              file="Source/transportControl.h"/>
+        <FILE id="q9ScuE" name="RoundedImageButton.cpp" compile="1" resource="0"
+              file="Source/RoundedImageButton.cpp"/>
+        <FILE id="us0W7q" name="RoundedImageButton.h" compile="0" resource="0"
+              file="Source/RoundedImageButton.h"/>
+      </GROUP>
+      <FILE id="jBOAhA" name="playlist.cpp" compile="1" resource="0" file="Source/playlist.cpp"/>
+      <FILE id="XlcOeF" name="playlist.h" compile="0" resource="0" file="Source/playlist.h"/>
+      <FILE id="y8eBVx" name="menuBar.cpp" compile="1" resource="0" file="Source/menuBar.cpp"/>
+      <FILE id="t0NuSL" name="menuBar.h" compile="0" resource="0" file="Source/menuBar.h"/>
+      <FILE id="DWnAaj" name="Tag.h" compile="0" resource="0" file="Source/Tag.h"/>
+      <FILE id="Ph0sND" name="Tag.cpp" compile="1" resource="0" file="Source/Tag.cpp"/>
+      <FILE id="F6ufGX" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="DLOZ5c" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="A4NwpP" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_MP3AUDIOFORMAT="1"
+               JUCE_USE_LAME_AUDIO_FORMAT="1"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="z&#10;tag">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Music Player" headerPath="./../../3rdParty/include"
+                       libraryPath="./../../3rdParty/lib/Debug"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Music Player" headerPath="./../../3rdParty/include"
+                       libraryPath="./../../3rdParty/lib/Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
