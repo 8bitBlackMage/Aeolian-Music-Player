@@ -20,6 +20,12 @@
             file="assets/skip-forward-line.png"/>
     </GROUP>
     <GROUP id="{DA10E05D-148E-B41C-DFB5-C1CB9456B8D2}" name="Source">
+      <FILE id="rOt3Bm" name="transportState.h" compile="0" resource="0"
+            file="Source/transportState.h"/>
+      <FILE id="gmkoKT" name="AudioPlaybackEngine.cpp" compile="1" resource="0"
+            file="Source/AudioPlaybackEngine.cpp"/>
+      <FILE id="R7huTo" name="AudioPlaybackEngine.h" compile="0" resource="0"
+            file="Source/AudioPlaybackEngine.h"/>
       <FILE id="NUovi4" name="CustomLookAndFeel.cpp" compile="1" resource="0"
             file="Source/CustomLookAndFeel.cpp"/>
       <FILE id="FzUtze" name="CustomLookAndFeel.h" compile="0" resource="0"

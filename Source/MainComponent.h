@@ -8,6 +8,8 @@
 #include "RoundedImageButton.h"
 #include "PlaylistTablebox.h"
 #include "CustomLookAndFeel.h"
+#include "transportState.h"
+#include "AudioPlaybackEngine.h"
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -15,28 +17,18 @@
 */
 
 
-enum TransportState
-{
-    Stopped,
-    Starting,
-    Playing,
-    Pausing,
-    Paused,
-    Stopping
-};
 
-
-class MainComponent  : public juce::AudioAppComponent, juce::ChangeListener
+class MainComponent  : public juce::Component, juce::ChangeListener
 {
 public:
     //==============================================================================
-    MainComponent();
+    MainComponent(AudioPlaybackEngine* engine);
     ~MainComponent() override;
 
     //==============================================================================
-    void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
-    void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
-    void releaseResources() override;
+    //void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
+   // void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
+   // void releaseResources() override;
 
     //==============================================================================
     void paint (juce::Graphics& g) override;
@@ -50,7 +42,7 @@ public:
     void skipForwardButtonPressed();
     void skipBackwardButtonPressed();
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
-    void generateReader(juce::File &file);
+   // void generateReader(juce::File &file);
     void changeState(TransportState state);
     
     void saveSettings();
@@ -74,9 +66,12 @@ private:
     
     
     std::unique_ptr<juce::FileChooser> chooser;
-    juce::AudioFormatManager formatManager;
-    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
-    juce::AudioTransportSource transportSource;
+//    juce::AudioFormatManager formatManager;
+//    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
+//    juce::AudioTransportSource transportSource;
+    
+   AudioPlaybackEngine* playbackEngine;
+    
     TransportState state;
     transportControl transport;
     TagInfo tags;

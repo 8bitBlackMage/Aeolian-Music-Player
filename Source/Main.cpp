@@ -8,7 +8,7 @@
 
 #include <JuceHeader.h>
 #include "MainComponent.h"
-
+#include "AudioPlaybackEngine.h"
 //==============================================================================
 class NewProjectApplication  : public juce::JUCEApplication
 {
@@ -24,14 +24,18 @@ public:
     void initialise (const juce::String& commandLine) override
     {
         // This method is where you should put your application's initialisation code..
-
-        mainWindow.reset (new MainWindow (getApplicationName()));
+        PlaybackEngine.reset(new AudioPlaybackEngine());
+        mainWindow.reset (new MainWindow (getApplicationName(),PlaybackEngine.get()));
+        
+        PlaybackEngineManager.setSource(PlaybackEngine.get());
+        deviceManager.initialiseWithDefaultDevices(0, 2);
+        deviceManager.addAudioCallback(&PlaybackEngineManager);
     }
 
     void shutdown() override
     {
-        // Add your application's shutdown code here..
-
+        deviceManager.removeAudioCallback(&PlaybackEngineManager);
+        PlaybackEngineManager.setSource(nullptr);
         mainWindow = nullptr; // (deletes our window)
     }
 
@@ -58,14 +62,15 @@ public:
     class MainWindow    : public juce::DocumentWindow
     {
     public:
-        MainWindow (juce::String name)
+        MainWindow (juce::String name, AudioPlaybackEngine* e)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (juce::ResizableWindow::backgroundColourId),
-                              DocumentWindow::allButtons)
+                              DocumentWindow::allButtons),
+            engine(e)
         {
             setUsingNativeTitleBar (true);
-            setContentOwned (new MainComponent(), true);
+            setContentOwned (new MainComponent(engine), true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -93,11 +98,15 @@ public:
         */
 
     private:
+        AudioPlaybackEngine* engine;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
 private:
+    juce::AudioDeviceManager deviceManager;
+    juce::AudioSourcePlayer PlaybackEngineManager;
     std::unique_ptr<MainWindow> mainWindow;
+    std::shared_ptr<AudioPlaybackEngine> PlaybackEngine;
 };
 
 //==============================================================================
