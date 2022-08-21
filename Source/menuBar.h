@@ -27,4 +27,5 @@ public:
     std::function<void ()> skipBackward;
     std::function<void ()> openFile;
     std::function<void ()> openFolder;
+    std::function<void ()> openDeviceSettings;
 };

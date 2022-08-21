@@ -17,6 +17,23 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::Slider::thumbColourId,Colours::offWhite );
     setColour(juce::Slider::backgroundColourId, Colours::lightGrey);
     setColour(juce::Slider::trackColourId, Colours::appleBlue);
+    
+    
+    setColour(juce::ComboBox::backgroundColourId, Colours::lightGrey);
+    setColour(juce::ComboBox::textColourId, juce::Colours::black);
+    setColour(juce::ComboBox::arrowColourId , Colours::appleBlue);
+    setColour(juce::ComboBox::focusedOutlineColourId , Colours::appleBlue);
+    
+    setColour(juce::PopupMenu::backgroundColourId, Colours::offWhite);
+    setColour(juce::PopupMenu::textColourId, juce::Colours::black);
+    
+    setColour(juce::Label::textColourId, juce::Colours::black);
+    
+    setColour(juce::TextButton::buttonColourId, Colours::lightGrey);
+    setColour(juce::TextButton::buttonOnColourId, Colours::darkGrey);
+    setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    setColour(juce::TextButton::textColourOnId, Colours::appleBlue);
+
 }
 
 

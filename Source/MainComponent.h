@@ -25,10 +25,7 @@ public:
     MainComponent(AudioPlaybackEngine* engine);
     ~MainComponent() override;
 
-    //==============================================================================
-    //void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
-   // void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
-   // void releaseResources() override;
+
 
     //==============================================================================
     void paint (juce::Graphics& g) override;
@@ -42,11 +39,10 @@ public:
     void skipForwardButtonPressed();
     void skipBackwardButtonPressed();
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
-   // void generateReader(juce::File &file);
     void changeState(TransportState state);
+
     
-    void saveSettings();
-    bool loadSettings();
+    void updateComponentsFromSettingsChange();
     
 private:
     //==============================================================================
@@ -58,7 +54,6 @@ private:
     RoundedImageButton skipBackwardButton;
     
     juce::TooltipWindow tooltip;
-    juce::File settingsFile;
     
     juce::Slider volumeControl;
     
@@ -66,11 +61,7 @@ private:
     
     
     std::unique_ptr<juce::FileChooser> chooser;
-//    juce::AudioFormatManager formatManager;
-//    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
-//    juce::AudioTransportSource transportSource;
-    
-   AudioPlaybackEngine* playbackEngine;
+    AudioPlaybackEngine* playbackEngine;
     
     TransportState state;
     transportControl transport;
@@ -78,7 +69,7 @@ private:
     TagDisplay tagsDisplay;
     juce::StringPairArray dbg;
     Playlist list;
-    menuBar mainMenu;
+
     CustomLookAndFeel theme;
     juce::Image skipForwardImage;
     juce::Image skipBackwardImage;

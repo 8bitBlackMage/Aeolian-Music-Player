@@ -1,7 +1,11 @@
 #include "MainComponent.h"
+
 #include "Colours.h"
 #include "Tag.h"
 //==============================================================================
+
+
+
 
 MainComponent::MainComponent(AudioPlaybackEngine* engine)
 {
@@ -9,28 +13,10 @@ MainComponent::MainComponent(AudioPlaybackEngine* engine)
     // you add any child components.
     
     playbackEngine = engine;
-    
+    playbackEngine->getTransportSource()->addChangeListener(this);
+    transport.setTransportSource(playbackEngine->getTransportSource());
     setSize (800, 600);
     juce::LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName ("System Font");
-    // Some platforms require permissions to open input channels so request that here
-//    if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
-//        && ! juce::RuntimePermissions::isGranted (juce::RuntimePermissions::recordAudio))
-//    {
-//        juce::RuntimePermissions::request (juce::RuntimePermissions::recordAudio,
-//                                           [&] (bool granted) { setAudioChannels (granted ? 2 : 0, 2); });
-//    }
-//    else
-//    {
-//        // Specify the number of input and output channels that we want to open
-//        setAudioChannels (2, 2);
-//    }
-    
-   // formatManager.registerBasicFormats();
-   // transportSource.addChangeListener(this);
-   // transport.setTransportSource(&transportSource);
-    
-    
-    
     skipForwardImage =     juce::ImageFileFormat::loadFrom(BinaryData::skipforwardline_png, BinaryData::skipforwardline_pngSize);
     skipBackwardImage =    juce::ImageFileFormat::loadFrom(BinaryData::skipbackline_png, BinaryData::skipbackline_pngSize);
     pauseImage =    juce::ImageFileFormat::loadFrom(BinaryData::pauseline_png, BinaryData::pauseline_pngSize);
@@ -38,26 +24,22 @@ MainComponent::MainComponent(AudioPlaybackEngine* engine)
     fileImage =     juce::ImageFileFormat::loadFrom(BinaryData::fileline_png, BinaryData::fileline_pngSize);
     folderImage =   juce::ImageFileFormat::loadFrom(BinaryData::folderline_png, BinaryData::folderline_pngSize);
     
-    //setButtonImage(openFileButton, fileImage);
     openFileButton.setImage(fileImage);
-    openFileButton.setColour(juce::TextButton::ColourIds::buttonColourId, juce::Colours::blue);
     openFileButton.onClick = [this] {openFileButtonPressed();};
     
     openFolderButton.setImage(folderImage);
-    openFolderButton.setColour(juce::TextButton::ColourIds::buttonColourId, juce::Colours::purple);
     openFolderButton.onClick = [this] {openFolderButtonPressed();};
     
     playButton.setImage(playImage);
-    playButton.setColour(juce::TextButton::ColourIds::buttonColourId, juce::Colours::green);
     playButton.onClick = [this] {playButtonPressed();};
     
     skipForwardButton.setImage(skipForwardImage);
-    skipForwardButton.setColour(juce::TextButton::ColourIds::buttonColourId, juce::Colours::orange);
     skipForwardButton.onClick = [this] {skipForwardButtonPressed();};
     
-    //setButtonImage(skipBackwardButton, skipBackwardImage);
+
     skipBackwardButton.setImage(skipBackwardImage);
     skipBackwardButton.onClick = [this] {skipBackwardButtonPressed();};
+    
 //    stopButton.setButtonText("stop");
 //    stopButton.setColour(juce::TextButton::ColourIds::buttonColourId, juce::Colours::red);
 //    stopButton.onClick = [this] {stopButtonPressed();};
@@ -89,54 +71,21 @@ MainComponent::MainComponent(AudioPlaybackEngine* engine)
     addAndMakeVisible(listbox);
     tooltip.setMillisecondsBeforeTipAppears(100);
     addAndMakeVisible(tooltip);
-    mainMenu.play = [this] {playButtonPressed();};
-    mainMenu.stop = [this] {stopButtonPressed();};
-    mainMenu.pause = [this] {pauseButtonPressed();};
-    mainMenu.skipForward = [this] {skipForwardButtonPressed();};
-    mainMenu.skipBackward = [this] {skipBackwardButtonPressed();};
-    mainMenu.openFile = [this]{openFileButtonPressed();};
-    mainMenu.openFolder = [this]{openFolderButtonPressed();};
-    juce::MenuBarModel::setMacMainMenu(&mainMenu);
+
+
     
-    jassert(loadSettings());
 
     resized();
 }
 
 MainComponent::~MainComponent()
 {
-    saveSettings();
+    playbackEngine->getTransportSource()->removeChangeListener(this);
+
     volumeControl.setLookAndFeel(nullptr);
-    juce::MenuBarModel::setMacMainMenu(nullptr);
-//    shutdownAudio();
+
 }
 
-//==============================================================================
-//void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
-//{
-//    transportSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
-//}
-
-
-//void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
-//{
-//
-//       
-//    if (readerSource.get() == nullptr)
-//    {
-//        bufferToFill.clearActiveBufferRegion();
-//        return;
-//    }
-//    transportSource.getNextAudioBlock (bufferToFill);
-//}
-
-//void MainComponent::releaseResources()
-//{
-//    // This will be called when the audio device stops, or when it is being
-//    // restarted due to a setting change.
-//
-//    // For more details, see the help for AudioProcessor::releaseResources()
-//}
 
 //==============================================================================
 void MainComponent::paint (juce::Graphics& g)
@@ -195,8 +144,6 @@ void MainComponent::resized()
 
 }
 
-
-
 void MainComponent::openFileButtonPressed()
 {
     chooser = std::make_unique<juce::FileChooser> ("Select a Wave file to play...",
@@ -241,6 +188,9 @@ void MainComponent::openFolderButtonPressed()
 
 void MainComponent::playButtonPressed()
 {
+    if(playbackEngine->getTransportSource()->getTotalLength() == 0 )
+        return;
+    
     if(state == Playing)
         changeState(Pausing);
     else
@@ -316,14 +266,9 @@ void MainComponent::changeState(TransportState newState)
  
             switch (state)
             {
-                case Stopped:                           // [3]
-                 //   transportSource->setPosition (0.0);
-                    break;
- 
                 case Starting:
                     //setButtonImage(playButton, pauseImage);
                     playButton.setImage(pauseImage);
-                   // transportSource.start();
                     break;
  
                 case Playing:
@@ -331,53 +276,20 @@ void MainComponent::changeState(TransportState newState)
                     playButton.setImage(pauseImage);
                     break;
                 case Pausing:
-                  //  transportSource.stop();
-                   // setButtonImage(playButton, playImage);
                     playButton.setImage(playImage);
                     break;
                 case Paused:
                     
                     break;
-                case Stopping:                          // [6]
-                  //  transportSource.stop();
+                default:
                     break;
             }
         }
 }
 
-void MainComponent::saveSettings()
+void MainComponent::updateComponentsFromSettingsChange()
 {
-    juce::AudioTransportSource * transportSource = playbackEngine->getTransportSource();
-    settingsFile = juce::File(juce::File::getSpecialLocation(juce::File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Application Support/8bitMusicPlayer/settings.xml"));
-    if(!settingsFile.existsAsFile())
-        settingsFile.create();
-    
-    juce::XmlElement root = juce::XmlElement("root");
-
-    juce::XmlElement* settingsChild = root.createNewChildElement("Settings");
-    settingsChild->setAttribute("Volume", transportSource->getGain());
-    
-    
-   jassert( root.writeTo(settingsFile));
-    
+    volumeControl.setValue(playbackEngine->getTransportSource()->getGain());
 }
 
 
-bool MainComponent::loadSettings()
-{
-    settingsFile = juce::File(juce::File::getSpecialLocation(juce::File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Application Support/8bitMusicPlayer/settings.xml"));
-    if(settingsFile.exists())
-    {
-        juce::XmlDocument doc(settingsFile);
-        std::unique_ptr<juce::XmlElement> root = doc.getDocumentElement();
-        
-        juce::XmlElement* settingsChild = root->getChildByName("Settings");
-        if(settingsChild != nullptr)
-        {
-        volumeControl.setValue(settingsChild->getDoubleAttribute("Volume"));
-
-            return true;
-        }
-    }
-    return false;
-}

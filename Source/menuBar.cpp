@@ -40,7 +40,8 @@ juce::PopupMenu menuBar::getMenuForIndex(int topLevelMenuIndex, const juce::Stri
             menu.addItem("pause",pause);
             menu.addItem("Stop",stop);
             menu.addItem("Skip Backward",skipBackward);
-            menu.addItem("skip Forward",skipForward);
+            menu.addItem("Skip Forward",skipForward);
+            menu.addItem("Open Audio Settings...", openDeviceSettings);
             break;
             
     }
