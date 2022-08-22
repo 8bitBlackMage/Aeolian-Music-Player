@@ -20,6 +20,14 @@
             file="assets/skip-forward-line.png"/>
     </GROUP>
     <GROUP id="{DA10E05D-148E-B41C-DFB5-C1CB9456B8D2}" name="Source">
+      <GROUP id="{74EC6A3C-231F-604A-A393-B6F416DB6C00}" name="PlaylistScanner">
+        <FILE id="jBOAhA" name="playlist.cpp" compile="1" resource="0" file="Source/playlist.cpp"/>
+        <FILE id="XlcOeF" name="playlist.h" compile="0" resource="0" file="Source/playlist.h"/>
+        <FILE id="usqei6" name="PlaylistScanner.cpp" compile="1" resource="0"
+              file="Source/PlaylistScanner.cpp"/>
+        <FILE id="DV8Hq7" name="PlaylistScanner.h" compile="0" resource="0"
+              file="Source/PlaylistScanner.h"/>
+      </GROUP>
       <FILE id="rOt3Bm" name="transportState.h" compile="0" resource="0"
             file="Source/transportState.h"/>
       <FILE id="gmkoKT" name="AudioPlaybackEngine.cpp" compile="1" resource="0"
@@ -47,8 +55,6 @@
         <FILE id="us0W7q" name="RoundedImageButton.h" compile="0" resource="0"
               file="Source/RoundedImageButton.h"/>
       </GROUP>
-      <FILE id="jBOAhA" name="playlist.cpp" compile="1" resource="0" file="Source/playlist.cpp"/>
-      <FILE id="XlcOeF" name="playlist.h" compile="0" resource="0" file="Source/playlist.h"/>
       <FILE id="y8eBVx" name="menuBar.cpp" compile="1" resource="0" file="Source/menuBar.cpp"/>
       <FILE id="t0NuSL" name="menuBar.h" compile="0" resource="0" file="Source/menuBar.h"/>
       <FILE id="DWnAaj" name="Tag.h" compile="0" resource="0" file="Source/Tag.h"/>
@@ -58,6 +64,8 @@
       <FILE id="A4NwpP" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
     </GROUP>
+    <FILE id="T9XFpa" name="AboutMenu.cpp" compile="1" resource="0" file="Source/AboutMenu.cpp"/>
+    <FILE id="saTuNl" name="AboutMenu.h" compile="0" resource="0" file="Source/AboutMenu.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_USE_MP3AUDIOFORMAT="1"
                JUCE_USE_LAME_AUDIO_FORMAT="1"/>

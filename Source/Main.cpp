@@ -10,6 +10,7 @@
 #include "MainComponent.h"
 #include "menuBar.h"
 #include "AudioPlaybackEngine.h"
+#include "AboutMenu.h"
 #include "Colours.h"
 //==============================================================================
 class NewProjectApplication  : public juce::JUCEApplication
@@ -77,10 +78,16 @@ public:
             deviceManager.createStateXml().get()->writeTo(deviceSettingsFile);
         
         juce::XmlElement root = juce::XmlElement("root");
-        juce::XmlElement* settingsChild = root.createNewChildElement("Settings");
-        settingsChild->setAttribute("Volume", transportSource->getGain());
-        
-        
+        juce::XmlElement* playerSettingsChild = root.createNewChildElement("Player_Settings");
+        playerSettingsChild->setAttribute("Volume", transportSource->getGain());
+        if(mainWindow != nullptr)
+        {
+        juce::XmlElement* GuiSettingsChild = root.createNewChildElement("GUI_Settings");
+        GuiSettingsChild->setAttribute("Width", mainWindow->getWidth());
+        GuiSettingsChild->setAttribute("Height", mainWindow->getHeight());
+        GuiSettingsChild->setAttribute("XPos", mainWindow->getX());
+        GuiSettingsChild->setAttribute("YPos", mainWindow->getY());
+        }
         jassert( root.writeTo(playerSettingsFile));
         
     }
@@ -101,20 +108,37 @@ public:
             juce::XmlDocument doc(playerSettingsFile);
             std::unique_ptr<juce::XmlElement> root = doc.getDocumentElement();
             
-            juce::XmlElement* settingsChild = root->getChildByName("Settings");
-            if(settingsChild != nullptr)
+            juce::XmlElement* playerSettingsChild = root->getChildByName("Player_Settings");
+            if(playerSettingsChild != nullptr)
             {
-                PlaybackEngine->getTransportSource()->setGain(settingsChild->getDoubleAttribute("Volume"));
+                PlaybackEngine->getTransportSource()->setGain(playerSettingsChild->getDoubleAttribute("Volume"));
 
-                return true;
+                
             }
+            juce::XmlElement* guiSettingsChild = root->getChildByName("GUI_Settings");
+            if(guiSettingsChild != nullptr && mainWindow != nullptr)
+            {
+                int width = guiSettingsChild->getIntAttribute("Width");
+                int height = guiSettingsChild->getIntAttribute("Height");
+                
+                int XPos = guiSettingsChild->getIntAttribute("XPos");
+                int YPos = guiSettingsChild->getIntAttribute("YPos");
+                
+                mainWindow->setBounds(XPos,YPos,width,height);
+            }
+            
         }
-        return false;
+        return true;
     }
     
     void openDeviceSettings()
     {
         audioSettings.reset( new AudioSettingsWindow( &deviceManager));
+    }
+    
+    void openAboutBox()
+    {
+        aboutMenu.reset( new PopUpAboutMenu());
     }
     
     //==============================================================================
@@ -158,9 +182,15 @@ public:
                 NewProjectApplication* application = dynamic_cast<NewProjectApplication*>(JUCEApplication::getInstance());
                 application->openDeviceSettings();
             };
-            
-            juce::MenuBarModel::setMacMainMenu(&mainMenu);
-            
+#if JUCE_MAC
+            juce::PopupMenu extraApplemenu;
+            extraApplemenu.addItem("About", [this]
+            {
+                NewProjectApplication* application = dynamic_cast<NewProjectApplication*>(JUCEApplication::getInstance());
+                application->openAboutBox();
+            });
+            juce::MenuBarModel::setMacMainMenu(&mainMenu, &extraApplemenu);
+#endif
         }
         void updateComponentsFromSettings()
         {
@@ -218,12 +248,34 @@ public:
         CustomLookAndFeel lookAndFeel;
         std::unique_ptr<juce::AudioDeviceSelectorComponent> selector;
     };
+    class PopUpAboutMenu: public juce::DocumentWindow
+    {
+    public:
+        PopUpAboutMenu():
+        juce::DocumentWindow("About",
+                             Colours::offWhite,
+                             DocumentWindow::closeButton)
+        {
+            centreWithSize(400, 200);
+            setContentOwned(&menu, false);
+            setUsingNativeTitleBar(true);
+            setVisible(true);
+            addToDesktop();
+        }
+        void closeButtonPressed()
+        {
+            removeFromDesktop();
+        }
+        private:
+            AboutMenu menu;
+    };
 private:
     juce::AudioDeviceManager deviceManager;
     juce::AudioSourcePlayer PlaybackEngineManager;
     std::unique_ptr<MainWindow> mainWindow;
     std::unique_ptr<AudioSettingsWindow> audioSettings;
     std::shared_ptr<AudioPlaybackEngine> PlaybackEngine;
+    std::shared_ptr<PopUpAboutMenu> aboutMenu;
 };
 
 //==============================================================================

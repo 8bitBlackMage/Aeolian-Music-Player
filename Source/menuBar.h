@@ -20,6 +20,8 @@ public:
     juce::PopupMenu getMenuForIndex(int topLevelMenuIndex, const juce::String &menuName) override;
     void menuItemSelected(int menuItemID, int topLevelMenuIndex) override;
     
+    
+    std::function<void ()> aboutMenu;
     std::function<void ()> play;
     std::function<void ()> pause;
     std::function<void ()> stop;
